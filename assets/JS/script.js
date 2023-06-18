@@ -7,15 +7,35 @@ const options = {
   },
 };
 
-
-
-let bouton = document.getElementById("bouton")
-let contain = document.getElementById("movie-result")
-
+let bouton = document.getElementById("bouton");
+let contain = document.getElementById("movie-result");
+let mySearch = document.getElementById("mySearch");
+let synopsis = document.getElementById("movie-overview");
+//ceci est de monntrer les films quand on clicker sur le bouton
 bouton.addEventListener("click", function () {
+  displayrequest();
+});
+//ceci est de montrer les films quand on appuie sur entrer
+mySearch.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    console.log("pressed");
+
+    displayrequest();
+  }
+});
+
+function displayrequest() {
   let input = document.getElementById("mySearch").value;
-  let search = input
-  console.log(search)
+  let search = input;
+  //cette condition se deroule quand le utilasateur ne mets pas un donnee
+  if (search === "") {
+    console.log("pls enter a film");
+    contain.innerHTML = `<div class="contain">
+     <h4>PLEASE ENTER A FILM...</h4> 
+   </div>`;
+    //
+  }
+  console.log(search);
 
   fetch(
     "https://api.themoviedb.org/3/search/movie?query=" +
@@ -23,40 +43,66 @@ bouton.addEventListener("click", function () {
       "&include_adult=false&language=en-US&page=1",
     options
   )
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        data.results.forEach(element => {
-         contain.innerHTML +=`
-         <div class="car m-2 col col-sm-10">
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      data.results.forEach((element) => {
+        contain.innerHTML += `
+         <div class="car m-2 col-lg-3 px-0">
          <img src="https://image.tmdb.org/t/p/w500/${element.backdrop_path}" alt="Avatar" style="width:100%">
          <div class="contain">
-           <h4>Title: <b>${element.original_title}</b></h4> 
+         <h4 id="movie-overview"><a href="about.html">Title: <b>${element.original_title}</b></a></h4> 
            <h4>Date de Sortie: ${element.release_date}</h4> 
            <h4>Ratings: ${element.vote_average}</h4> 
          </div>
        </div>
            
-         ` 
-        })
-        })
-    .catch(err => console.error(err))    
-});
+         `;
+      });
+    })
+    .catch((err) => console.error(err));
+}
+/****************************************************************************************** */
+//for more details about the movie
 
- /* TEMPLATE FOR REFERENCE .then(res => {
-    return res.json();
-}).then(data => {
-   console.log(data)
-   contain.innerHTML = `
-   <div class="card">
-   <img src="${data.results[0].picture.large}" alt="Avatar" style="width:100%">
-   <div class="container">
-       <p>Departement: ${data.results[0].location.state}</p>
-       <p>Ville: ${data.results[0].location.city}</p>
-       <p>Pseudo: ${data.results[0].login.username}</p>
-       <p>Age: ${data.results[0].registered.age}</p>
-       
-   </div>
-</div>
-   `
-*/
+function overView() {
+  let input = document.getElementById("mySearch").value;
+  let search = input;
+  //cette condition se deroule quand le utilasateur ne mets pas un donnee
+  if (search === "") {
+    console.log("pls enter a film");
+    contain.innerHTML = `<div class="contain">
+     <h4>PLEASE ENTER A FILM...</h4> 
+   </div>`;
+    //
+  }
+  console.log(search);
+
+  fetch(
+    "https://api.themoviedb.org/3/search/movie?query=" +
+      search +
+      "&include_adult=false&language=en-US&page=1",
+    options
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      data.results.forEach((element) => {
+        contain.innerHTML += `
+         <div class="car m-2 col-lg-6 px-0">
+         <img src="https://image.tmdb.org/t/p/w500/${element.backdrop_path}" alt="Avatar" style="width:100%">
+         <div class="contain">
+         <h4><a href="about.html">Title: <b>${element.original_title}</b></a></h4> 
+           <p>${element.overview}</p>
+         </div>
+       </div>
+           
+         `;
+      });
+    })
+    .catch((err) => console.error(err));
+}
+bouton.addEventListener("load", function () {
+  overView();
+});
+/****************************************************************************************** */
