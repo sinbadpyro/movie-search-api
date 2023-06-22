@@ -12,7 +12,7 @@
 </head>
 
 <body>
-     <div class="container" id="containingthem">
+    <div class="container" id="containingthem">
         <h1 class="text-center">AFPA MOVIE SEARCH</h1>
 
         <div class="search-area text-center">
@@ -21,12 +21,18 @@
         </div>
 
         <div class="text-center d-flex justify-content-center mt-5 row" id="movie-show">
-           
+
         </div>
-     </div>
-     <script src="assets/JS/script.js"></script>
-     <script>displayMovieDetails();</script>
-   
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            //your code here
+            displayMovieDetails()
+        });
+    </script>
+    <script src="assets/JS/script.js"></script>
+
+
 </body>
 
 </html>
